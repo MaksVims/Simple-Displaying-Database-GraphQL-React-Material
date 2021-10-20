@@ -98,6 +98,13 @@ const rootMutation = new GraphQLObjectType({
         return Provider.findByIdAndUpdate(id, {$set: {organization, tel}}, {new: true})
       }
     },
+    deleteProvider: {
+      type: ProviderType,
+      args: {id: {type: GraphQLID}},
+      resolve:(parent, {id}) => {
+        return Provider.findByIdAndDelete(id)
+      }
+    },
 
     createProduct: {
       type: ProductType,
@@ -121,6 +128,13 @@ const rootMutation = new GraphQLObjectType({
       },
       resolve: (parent, {id,title, quantity, providerId}) => {
         return Product.findByIdAndUpdate(id, {$set: {title, quantity, providerId}}, {new: true})
+      }
+    },
+    deleteProduct: {
+      type: ProductType,
+      args: {id: {type: GraphQLID}},
+      resolve:(parent, {id}) => {
+        return Product.findByIdAndDelete(id)
       }
     },
   })
