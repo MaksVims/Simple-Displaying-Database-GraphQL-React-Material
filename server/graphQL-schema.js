@@ -73,6 +73,37 @@ const rootQuery = new GraphQLObjectType({
   })
 })
 
+const rootMutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: () => ({
+    createProvider: {
+      type: ProviderType,
+      args: {
+        organization: {type: new GraphQLNonNull(GraphQLString)},
+        tel: {type: GraphQLInt},
+      },
+      resolve: (parent, {organization, tel}) => {
+        const provider = new Provider({organization, tel})
+        return provider.save()
+      }
+    },
+
+    createProduct: {
+      type: ProductType,
+      args: {
+        title: {type: new GraphQLNonNull(GraphQLString)},
+        quantity: {type: GraphQLInt},
+        providerId: {type: GraphQLID}
+      },
+      resolve: (parent, {title, quantity, providerId}) => {
+        const product = new Product({title, quantity, providerId})
+        return product.save()
+      }
+    }
+  })
+})
+
 module.exports = new GraphQLSchema({
-  query: rootQuery
+  query: rootQuery,
+  mutation: rootMutation
 })
