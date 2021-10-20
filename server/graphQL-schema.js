@@ -16,11 +16,11 @@ const ProviderType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     organization: {type: new GraphQLNonNull(GraphQLString)},
-    tel: {type: Number},
+    tel: {type: GraphQLInt},
     products: {
       type: new GraphQLList(ProductType),
       resolve: ({id}) => {
-        return Product.find({productId: id})
+        return Product.find({providerId: id})
       }
     }
   })
@@ -41,4 +41,38 @@ const ProductType = new GraphQLObjectType({
   })
 })
 
-module.exports = new GraphQLSchema({})
+const rootQuery = new GraphQLObjectType({
+  name: 'Query',
+  fields: () => ({
+    product: {
+      type: ProductType,
+      args: {id: {type: GraphQLID}},
+      resolve: (parent, {id}) => {
+        return Product.findById(id)
+      }
+    },
+    products: {
+      type: new GraphQLList(ProductType),
+      resolve: () => {
+        return Product.find()
+      }
+    },
+    provider: {
+      type: ProviderType,
+      args: {id: {type: GraphQLID}},
+      resolve: (parent, {id}) => {
+        return Provider.findById(id)
+      }
+    },
+    providers: {
+      type: new GraphQLList(ProviderType),
+      resolve: () => {
+        return Provider.find()
+      }
+    }
+  })
+})
+
+module.exports = new GraphQLSchema({
+  query: rootQuery
+})
