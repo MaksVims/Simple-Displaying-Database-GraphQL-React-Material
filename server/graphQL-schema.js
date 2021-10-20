@@ -87,6 +87,17 @@ const rootMutation = new GraphQLObjectType({
         return provider.save()
       }
     },
+    updateProvider: {
+      type: ProviderType,
+      args: {
+        id: {type: GraphQLID},
+        organization: {type: new GraphQLNonNull(GraphQLString)},
+        tel: {type: GraphQLInt},
+      },
+      resolve: (parent, {id,organization, tel}) => {
+        return Provider.findByIdAndUpdate(id, {$set: {organization, tel}}, {new: true})
+      }
+    },
 
     createProduct: {
       type: ProductType,
@@ -99,7 +110,19 @@ const rootMutation = new GraphQLObjectType({
         const product = new Product({title, quantity, providerId})
         return product.save()
       }
-    }
+    },
+    updateProduct: {
+      type: ProductType,
+      args: {
+        id: {type: GraphQLID},
+        title: {type: new GraphQLNonNull(GraphQLString)},
+        quantity: {type: GraphQLInt},
+        providerId: {type: GraphQLID}
+      },
+      resolve: (parent, {id,title, quantity, providerId}) => {
+        return Product.findByIdAndUpdate(id, {$set: {title, quantity, providerId}}, {new: true})
+      }
+    },
   })
 })
 
