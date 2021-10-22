@@ -21,6 +21,7 @@ const Providers = () => {
   const [updateProviderMutation] = useMutation(UPDATE_PROVIDER)
 
   useEffect(() => {
+    refetchProviders()
     if (!loadingProviders) {
       setProviders(dataProviders.providers)
     }
