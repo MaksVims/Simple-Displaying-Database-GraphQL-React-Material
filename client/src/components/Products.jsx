@@ -7,6 +7,7 @@ import AppModal from "./AppModal";
 import AppTable from "./AppTable";
 import {GET_PRODUCTS} from "../query/product";
 import {CREATE_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT} from "../mutation/product";
+import FormProduct from "./FormProduct";
 
 const Products = () => {
   const [currentProduct, setCurrentProduct] = useState(null)
@@ -47,9 +48,9 @@ const Products = () => {
     setCreateModalIsOpen(false)
     await refetchProducts()
   }
-  const updateProduct = async (data) => {
+  const updateProduct = async ({id,title, quantity, providerId}) => {
     await updateProductMutation({
-      variables: {...data}
+      variables: {id,title, quantity, providerId}
     })
     setUpdateModalIsOpen(false)
     await refetchProducts()
@@ -77,10 +78,13 @@ const Products = () => {
       />
       <AppModal open={createModalIsOpen} handleClose={() => setCreateModalIsOpen(false)} title={"create product"}>
         <Typography align="center" sx={{mb: 3}} variant="h5" component="h3">Create product</Typography>
+        <FormProduct submitHandler={createProduct}/>
       </AppModal>
       <AppModal open={updateModalIsOpen} handleClose={() => setUpdateModalIsOpen(false)} title={"Update this product"}>
         <Typography align="center" sx={{mb: 3}} variant="h5" component="h3">Update this product</Typography>
+        <FormProduct product={currentProduct} submitHandler={updateProduct}/>
       </AppModal>
+
     </>
   );
 };
