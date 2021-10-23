@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
-const AppSelect = ({options, title, value, onChange}) => {
+
+const AppSelect = ({options, title = '', value, onChange}) => {
 
   return (
     <FormControl fullWidth>
@@ -21,3 +23,13 @@ const AppSelect = ({options, title, value, onChange}) => {
 };
 
 export default AppSelect;
+
+AppSelect.propTypes = {
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  }))
+}

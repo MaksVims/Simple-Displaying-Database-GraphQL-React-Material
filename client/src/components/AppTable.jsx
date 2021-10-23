@@ -2,8 +2,9 @@ import React from 'react';
 import {IconButton, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {DeleteOutlined, SystemUpdateAltOutlined} from "@mui/icons-material";
 import {formatFirstUpperCase} from "../utils";
+import PropTypes from 'prop-types'
 
-const AppTable = ({data, updateHandler, removeHandler, subItem}) => {
+const AppTable = ({data = [], updateHandler, removeHandler, subItem}) => {
   const fieldsName = Object.keys(data[0] || {})?.filter(field => field !== 'id' && field !== '__typename')
 
   if (!fieldsName.length) {
@@ -43,3 +44,10 @@ const AppTable = ({data, updateHandler, removeHandler, subItem}) => {
 };
 
 export default AppTable;
+
+AppTable.propTypes = {
+  data: PropTypes.array.isRequired,
+  updateHandler: PropTypes.func.isRequired,
+  removeHandler: PropTypes.func.isRequired,
+  subItem: PropTypes.func
+}

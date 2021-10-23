@@ -4,13 +4,13 @@ import {useQuery} from "@apollo/client";
 import {GET_PROVIDERS} from "../query/provider";
 import AppSelect from "./AppSelect";
 import {formatProviderToOptions} from "../utils";
+import PropTypes from 'prop-types'
 
 const fieldStyle = {
   marginBottom: '15px'
 }
 
 const FormProduct = ({product, submitHandler: onClick}) => {
-
   const [selectedProvider, setSelectedProvider] = useState(product?.provider.id || '')
   const [title, setTitle] = useState(product?.title || '')
   const [quantity, setQuantity] = useState(product?.quantity || 0)
@@ -64,3 +64,15 @@ const FormProduct = ({product, submitHandler: onClick}) => {
 };
 
 export default FormProduct;
+
+FormProduct.propTypes = {
+  submitHandler: PropTypes.func.isRequired,
+  product: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    quantity: PropTypes.number.isRequired,
+    provider: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }).isRequired
+  })
+}

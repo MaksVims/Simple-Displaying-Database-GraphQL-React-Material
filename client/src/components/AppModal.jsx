@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import {Box, Modal} from "@mui/material";
 
 const style = {
@@ -13,7 +14,7 @@ const style = {
   p: 4,
 };
 
-const AppModal = ({open, handleClose, title, children}) => {
+const AppModal = ({open, handleClose, title = '', children}) => {
   return (
     <Modal
       open={open}
@@ -28,3 +29,9 @@ const AppModal = ({open, handleClose, title, children}) => {
 };
 
 export default AppModal;
+
+AppModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  title: PropTypes.string
+}

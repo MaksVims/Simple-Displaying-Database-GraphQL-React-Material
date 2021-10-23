@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, TextField} from "@mui/material";
+import PropTypes from 'prop-types'
 
 const fieldStyle = {
   marginBottom: '15px'
@@ -8,7 +9,6 @@ const fieldStyle = {
 const FormProvider = ({provider, submitHandler: onClick}) => {
   const [organization, setOrganization] = useState(provider?.organization || '')
   const [tel, setTel] = useState(provider?.tel || '')
-
   const submitHandler = (e) => {
     e.preventDefault()
     const data = provider ? {...provider, organization, tel} : {organization, tel}
@@ -54,3 +54,16 @@ const FormProvider = ({provider, submitHandler: onClick}) => {
 };
 
 export default FormProvider;
+
+FormProvider.propTypes = {
+  submitHandler: PropTypes.func.isRequired,
+  provider: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    organization: PropTypes.string.isRequired,
+    tel: PropTypes.number,
+    products: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    }))
+  })
+}
