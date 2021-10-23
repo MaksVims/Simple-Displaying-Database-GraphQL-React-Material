@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import PropTypes from 'prop-types'
 
 const DialogRemove = ({open, onClose, title, content, confirmHandler}) => {
   return (
@@ -22,3 +23,11 @@ const DialogRemove = ({open, onClose, title, content, confirmHandler}) => {
 };
 
 export default DialogRemove;
+
+DialogRemove.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  content: PropTypes.string,
+  confirmHandler: PropTypes.func
+}
