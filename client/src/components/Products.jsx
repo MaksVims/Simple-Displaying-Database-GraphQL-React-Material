@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {TableCell, TableContainer, Typography} from "@mui/material";
 import BtnAddItem from "./BtnAddItem";
 import {useMutation, useQuery} from "@apollo/client";
@@ -8,8 +8,9 @@ import AppTable from "./AppTable";
 import {GET_PRODUCTS} from "../query/product";
 import {CREATE_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT} from "../mutation/product";
 import FormProduct from "./FormProduct";
+import {filterSearchItems} from "../utils";
 
-const Products = () => {
+const Products = ({search}) => {
   const [currentProduct, setCurrentProduct] = useState(null)
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false)
   const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false)
@@ -25,6 +26,10 @@ const Products = () => {
       setProducts(dataProducts.products)
     }
   }, [dataProducts])
+
+  const filteredProduct = useMemo(() => {
+    return loadingProducts ? products : filterSearchItems(products, 'title', search)
+  }, [products, search])
 
   const openUpdateModal = (product) => {
     setCurrentProduct(product)
@@ -61,7 +66,7 @@ const Products = () => {
       {loadingProducts ? <h1>Load...</h1> :
         <TableContainer component={"table"} sx={{width: '100%', backgroundColor: '#b7b3b3'}}>
           <AppTable
-            data={products || []}
+            data={filteredProduct || []}
             removeHandler={openRemoveDialog}
             updateHandler={openUpdateModal}
             subItem={(data) => <TableCell> {data.organization}</TableCell>}

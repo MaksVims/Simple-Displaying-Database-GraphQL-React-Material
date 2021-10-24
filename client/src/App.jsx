@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Box, Container, Tab, Tabs} from "@mui/material";
 import Providers from "./components/Providers";
 import Products from "./components/Products";
-
-const pages = [<Providers/>, <Products/>]
+import AppSearch from "./components/AppSearch";
 
 const App = () => {
   const [currentTab, setCurrentTab] = useState(0)
+  const [search, setSearch] = useState('')
   const switchCurrentTab = (e, value) => setCurrentTab(value)
+  const pages = [<Providers search={search}/>, <Products search={search}/>]
 
   return (
     <Box sx={{height: '100vh', width: '100vw', backgroundColor: '#6e6b6b'}}>
@@ -26,6 +27,7 @@ const App = () => {
         </Tabs>
       </Box>
       <Container maxWidth="lg">
+        <AppSearch value={search} onChange={setSearch}/>
         {pages[currentTab]}
       </Container>
     </Box>

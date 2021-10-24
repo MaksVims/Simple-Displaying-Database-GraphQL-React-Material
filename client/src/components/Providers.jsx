@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {TableCell, TableContainer, Typography} from "@mui/material";
 import BtnAddItem from "./BtnAddItem";
 import {useMutation, useQuery} from "@apollo/client";
@@ -8,8 +8,9 @@ import {CREATE_PROVIDER, DELETE_PROVIDER, UPDATE_PROVIDER} from "../mutation/pro
 import AppModal from "./AppModal";
 import FormProvider from "./FormProvider";
 import AppTable from "./AppTable";
+import {filterSearchItems} from "../utils";
 
-const Providers = () => {
+const Providers = ({search}) => {
   const [currentProvider, setCurrentProvider] = useState(null)
   const [createModalIsOpen, setCreateModalIsOpen] = useState(false)
   const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false)
@@ -26,6 +27,10 @@ const Providers = () => {
       setProviders(dataProviders.providers)
     }
   }, [dataProviders])
+
+  const filteredProviders = useMemo(() => {
+    return loadingProviders ? providers : filterSearchItems(providers, 'organization', search)
+  }, [providers, search])
 
   const openUpdateModal = (provider) => {
     setCurrentProvider(provider)
@@ -62,7 +67,7 @@ const Providers = () => {
       {loadingProviders ? <h1>Load...</h1> :
         <TableContainer component={"table"} sx={{width: '100%', backgroundColor: '#b7b3b3'}}>
           <AppTable
-            data={providers}
+            data={filteredProviders}
             removeHandler={openRemoveDialog}
             updateHandler={openUpdateModal}
             subItem={(data) => (
