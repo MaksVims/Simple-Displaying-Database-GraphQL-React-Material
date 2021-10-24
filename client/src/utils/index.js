@@ -7,3 +7,7 @@ export function formatProviderToOptions(providers) {
     return {value: provider.id, title: provider.organization}
   })
 }
+
+export function filterSearchItems(data, nameField, search) {
+  return data.filter(item => item[nameField].toLowerCase().includes(search.toLowerCase()))
+}
